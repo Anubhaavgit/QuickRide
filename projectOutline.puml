@@ -1,0 +1,72 @@
+@startuml
+
+!define RECTANGLE class
+
+' Define the classes
+RECTANGLE QuickRideController {
+    + load() : void
+    + addUser(user: User) : void
+    + removeUser(user: User) : void
+    + addDriver(driver: CabDriver) : void
+    + removeDriver(driver: CabDriver) : void
+    + updateUserCurrentLocation(userId: int, currentLocation: Coordinate) : String
+    + getDrivers() : List<CabDriver>
+    + getUsers() : List<User>
+    + getUser(userId: int) : User
+    + getDriver(driverId: int) : CabDriver
+    + findRide(userId: int, destination: Coordinate) : String
+    + validateRide() : void
+    + getEarnings(driver: CabDriver) : int
+}
+
+RECTANGLE UserServiceImpl {
+    + loadUsers() : void
+    + addUser(user: User) : void
+    + removeUser(user: User) : void
+    + updateUserLocation(userId: int, currentLocation: Coordinate) : String
+    + getList() : List<User>
+    + getUserById(userId: int) : User
+    + findRide(userId: int, destination: Coordinate) : String
+}
+
+RECTANGLE DriverServiceImpl {
+    + loadDrivers() : void
+    + addDriver(driver: CabDriver) : void
+    + removeDriver(driver: CabDriver) : void
+    + getList() : List<CabDriver>
+    + getDriverById(driverId: int) : CabDriver
+    + addDriver(driver: CabDriver) : void
+}
+
+RECTANGLE RideValidator {
+    + rideValidation(users: List<User>, drivers: List<CabDriver>) : void
+}
+
+RECTANGLE CabDriver {
+    + getEarnings() : int
+}
+
+RECTANGLE User {
+    + getLocation() : Coordinate
+    + getDestination() : Coordinate
+    + setLocation(coordinate: Coordinate) : void
+}
+
+RECTANGLE Coordinate {
+    + x : int
+    + y : int
+}
+
+' Relationships
+QuickRideController --> UserServiceImpl : Uses
+QuickRideController --> DriverServiceImpl : Uses
+QuickRideController --> RideValidator : Uses
+QuickRideController --> CabDriver : Interacts with
+QuickRideController --> User : Interacts with
+
+UserServiceImpl --> User : Manages
+DriverServiceImpl --> CabDriver : Manages
+RideValidator --> User : Works with
+RideValidator --> CabDriver : Works with
+
+@enduml
